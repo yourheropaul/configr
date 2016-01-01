@@ -31,7 +31,7 @@ type Config interface {
 	Parsed() bool
 	MustParse()
 
-	Get(string) (interface{}, error)
+	Read(string) (interface{}, error)
 
 	String(string) (string, error)
 	Bool(string) (bool, error)
@@ -307,10 +307,10 @@ func (c *Configr) findKeysAndValuesToValidate(key string, value interface{}) (ma
 //
 // If a key is not found but has been registered with a default, the default
 // will be returned
-func Get(key string) (interface{}, error) {
-	return globalConfigr.Get(key)
+func Read(key string) (interface{}, error) {
+	return globalConfigr.Read(key)
 }
-func (c *Configr) Get(key string) (interface{}, error) {
+func (c *Configr) Read(key string) (interface{}, error) {
 	if !c.Parsed() {
 		return nil, ErrParseHasntBeenCalled
 	}
@@ -363,52 +363,52 @@ func searchMap(source map[string]interface{}, path []string) interface{} {
 	}
 }
 
-// String wraps Get() and will attempt to cast the resulting value to a string
+// String wraps Read() and will attempt to cast the resulting value to a string
 // or error
 func String(key string) (string, error) {
 	return globalConfigr.String(key)
 }
 func (c *Configr) String(key string) (string, error) {
-	val, err := c.Get(key)
+	val, err := c.Read(key)
 	if err != nil {
 		return "", err
 	}
 	return cast.ToStringE(val)
 }
 
-// Bool wraps Get() and will attempt to cast the resulting value to a bool
+// Bool wraps Read() and will attempt to cast the resulting value to a bool
 // or error
 func Bool(key string) (bool, error) {
 	return globalConfigr.Bool(key)
 }
 func (c *Configr) Bool(key string) (bool, error) {
-	val, err := c.Get(key)
+	val, err := c.Read(key)
 	if err != nil {
 		return false, err
 	}
 	return cast.ToBoolE(val)
 }
 
-// Int wraps Get() and will attempt to cast the resulting value to a int
+// Int wraps Read() and will attempt to cast the resulting value to a int
 // or error
 func Int(key string) (int, error) {
 	return globalConfigr.Int(key)
 }
 func (c *Configr) Int(key string) (int, error) {
-	val, err := c.Get(key)
+	val, err := c.Read(key)
 	if err != nil {
 		return 0, err
 	}
 	return cast.ToIntE(val)
 }
 
-// Float64 wraps Get() and will attempt to cast the resulting value to a float64
+// Float64 wraps Read() and will attempt to cast the resulting value to a float64
 // or error
 func Float64(key string) (float64, error) {
 	return globalConfigr.Float64(key)
 }
 func (c *Configr) Float64(key string) (float64, error) {
-	val, err := c.Get(key)
+	val, err := c.Read(key)
 	if err != nil {
 		return 0, err
 	}

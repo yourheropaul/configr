@@ -234,15 +234,15 @@ func Test_ItRetrivesNestedValues(t *testing.T) {
 	t2t21t211Expected := 2
 	t331Expected := 3
 
-	t1t11, err := config.Get("t1.t11")
+	t1t11, err := config.Read("t1.t11")
 	assert.NoError(t, err)
 	assert.Equal(t, t1t11Expected, t1t11)
 
-	t2t21t211, err := config.Get("t2.t21.t211")
+	t2t21t211, err := config.Read("t2.t21.t211")
 	assert.NoError(t, err)
 	assert.Equal(t, t2t21t211Expected, t2t21t211)
 
-	t331, err := config.Get("t3.31")
+	t331, err := config.Read("t3.31")
 	assert.NoError(t, err)
 	assert.Equal(t, t331Expected, t331)
 }
@@ -349,7 +349,7 @@ func Test_ItHandlesPathStyleKeysToSetValues(t *testing.T) {
 func Test_ItErrorsIfYouTryGetBeforeParsing(t *testing.T) {
 	config := New()
 
-	_, err := config.Get("test")
+	_, err := config.Read("test")
 
 	assert.Equal(t, ErrParseHasntBeenCalled, err)
 }
@@ -360,7 +360,7 @@ func Test_ItReturnsDefaultValueIfNoValueFoundFromSources(t *testing.T) {
 
 	config.RegisterKey("test", "its a test!", 1)
 
-	value, err := config.Get("test")
+	value, err := config.Read("test")
 	assert.NoError(t, err)
 
 	assert.Equal(t, 1, value.(int))
